@@ -27,4 +27,10 @@ fi
 ln -s "$SCRIPT_DIR/.vimrc" "$HOME/.vimrc"
 
 echo "Linked: $HOME/.vimrc -> $SCRIPT_DIR/.vimrc"
+
+# カラースキーム(molokai)のインストール
+mkdir -p "$HOME/.vim/colors"
+cp "$SCRIPT_DIR/colors/molokai.vim" "$HOME/.vim/colors/molokai.vim"
+
+echo "Installed: molokai.vim -> $HOME/.vim/colors/molokai.vim"
 echo "Done."
