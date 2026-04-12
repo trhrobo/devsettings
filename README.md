@@ -7,7 +7,7 @@ By creating a symlink from `~/.vimrc` to the `.vimrc` in this repository, Vim re
 ## Setup
 
 ```bash
-git clone <repository-url>
+git clone git@github.com:trhrobo/vimsetting.git
 cd vimsetting
 chmod +x setup.sh
 ./setup.sh
