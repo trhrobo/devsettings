@@ -1,4 +1,4 @@
-# vimsetting
+# vimsettings
 
 A repository for managing Vim configuration files with Git.
 
@@ -7,8 +7,8 @@ By creating a symlink from `~/.vimrc` to the `.vimrc` in this repository, Vim re
 ## Setup
 
 ```bash
-git clone git@github.com:trhrobo/vimsetting.git
-cd vimsetting
+git clone git@github.com:trhrobo/vimsettings.git
+cd vimsettings
 chmod +x setup.sh
 ./setup.sh
 ```
@@ -29,6 +29,56 @@ Safe to re-run — skips if already linked.
 | Search | Incremental, smart case |
 | Display | Line numbers, cursor line/column highlight, visible whitespace |
 | Color scheme | molokai (dark) |
+
+## Plugins
+
+This configuration uses [vim-plug](https://github.com/junegunn/vim-plug) as a plugin manager.
+
+### Install vim-plug
+
+```bash
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+```
+
+### Install plugins
+
+After setup, open Vim and run:
+
+```vim
+:PlugInstall
+```
+
+This installs all plugins defined in `.vimrc`.
+
+### Markdown Preview
+
+This setup includes [markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim) for live preview.
+
+**Requirements:**
+
+```bash
+sudo apt install nodejs npm
+```
+
+**Usage:**
+
+Open a markdown file and run:
+
+```vim
+:MarkdownPreview
+```
+
+Stop preview:
+
+```vim
+:MarkdownPreviewStop
+```
+
+### Notes
+
+- `:PlugInstall` is only required when adding or updating plugins
+- Plugins are stored in `~/.vim/plugged/`
 
 ## Uninstall
 

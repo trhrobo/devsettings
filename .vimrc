@@ -80,3 +80,10 @@ nnoremap <Esc><Esc> :nohlsearch<CR><Esc>
 set background=dark
 let g:rehash256 = 1
 colorscheme molokai
+
+" Markdown
+call plug#begin('~/.vim/plugged')
+
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npm install' }
+
+call plug#end()
