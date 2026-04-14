@@ -1,22 +1,24 @@
-# vimsettings
+# devsettings
 
-A repository for managing Vim configuration files with Git.
+A repository for managing Vim and tmux configuration files with Git.
 
-By creating a symlink from `~/.vimrc` to the `.vimrc` in this repository, Vim references the config directly from here. All changes are made within this repository and tracked by Git.
+By creating symlinks from `~/.vimrc` and `~/.tmux.conf` to the files in this repository, Vim and tmux reference the configs directly from here. All changes are made within this repository and tracked by Git.
 
 ## Setup
 
 ```bash
-git clone git@github.com:trhrobo/vimsettings.git
-cd vimsettings
+git clone git@github.com:trhrobo/devsettings.git
+cd devsettings
 chmod +x setup.sh
 ./setup.sh
 ```
 
 `setup.sh` does the following:
 
-1. If `~/.vimrc` exists as a regular file, backs it up to `~/.vimrc.bak`
-2. Creates a symlink: `~/.vimrc` -> `.vimrc` in this repository
+1. If `~/.vimrc` / `~/.tmux.conf` exist as regular files, backs them up to `*.bak`
+2. Creates symlinks: `~/.vimrc` -> `.vimrc` and `~/.tmux.conf` -> `.tmux.conf` in this repository
+3. Installs the molokai color scheme into `~/.vim/colors/`
+4. If tmux is running, reloads the config automatically
 
 Safe to re-run — skips if already linked.
 
@@ -29,6 +31,17 @@ Safe to re-run — skips if already linked.
 | Search | Incremental, smart case |
 | Display | Line numbers, cursor line/column highlight, visible whitespace |
 | Color scheme | molokai (dark) |
+
+## .tmux.conf Overview
+
+| Category | Details |
+|---|---|
+| Key mode | vi |
+| Clipboard | `set-clipboard on` (OSC 52 passthrough to outer terminal) |
+| Copy-mode `v` | Begin selection |
+| Copy-mode `y` | Copy selection and cancel (yanks to tmux buffer + emits OSC 52) |
+
+Note: OSC 52 clipboard integration requires the outer terminal emulator to support it (e.g., WezTerm, Alacritty, Kitty, iTerm2). GNOME Terminal does not support OSC 52, so yank will only populate the tmux buffer — use mouse selection for the system clipboard in that case.
 
 ## Plugins
 
