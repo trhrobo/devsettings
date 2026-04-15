@@ -1,8 +1,8 @@
-# Based on molokai-dark by pR0Ps (https://github.com/pR0Ps/molokai-dark)
-#
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+" Based on molokai-dark by pR0Ps (https://github.com/pR0Ps/molokai-dark)
+"
+" This Source Code Form is subject to the terms of the Mozilla Public
+" License, v. 2.0. If a copy of the MPL was not distributed with this
+" file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 "molokai-dark theme for Vim
 
