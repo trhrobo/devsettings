@@ -115,6 +115,13 @@ run_plug_install() {
 run_plug_install vim
 run_plug_install nvim
 
+# ~/.bashrc の force_color_prompt を有効化（tmux 内でも緑プロンプトを維持）
+BASHRC="$HOME/.bashrc"
+if [ -f "$BASHRC" ] && grep -q '^#force_color_prompt=yes' "$BASHRC"; then
+    sed -i 's/^#force_color_prompt=yes/force_color_prompt=yes/' "$BASHRC"
+    echo "Enabled force_color_prompt in $BASHRC"
+fi
+
 # tmuxが起動中なら設定を再読み込み
 if [ -n "$TMUX" ]; then
     tmux source-file "$HOME/.tmux.conf"
