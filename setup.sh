@@ -41,6 +41,80 @@ mkdir -p "$HOME/.vim/colors"
 cp "$SCRIPT_DIR/colors/molokai.vim" "$HOME/.vim/colors/molokai.vim"
 echo "Installed: molokai.vim -> $HOME/.vim/colors/molokai.vim"
 
+# vim-plug を指定パスに取得するヘルパー
+fetch_plug_vim() {
+    local dest="$1"
+    if [ -f "$dest" ]; then
+        echo "vim-plug already installed at $dest"
+        return
+    fi
+    echo "Installing vim-plug -> $dest"
+    mkdir -p "$(dirname "$dest")"
+    if command -v curl >/dev/null 2>&1; then
+        curl -fLo "$dest" --create-dirs \
+            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    elif command -v wget >/dev/null 2>&1; then
+        wget -O "$dest" \
+            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    else
+        echo "Error: curl or wget is required to install vim-plug." >&2
+        exit 1
+    fi
+}
+
+# Vim 用 vim-plug
+fetch_plug_vim "$HOME/.vim/autoload/plug.vim"
+
+# Neovim 用のセットアップ（`vim`が実体 nvim の環境を含む）
+if command -v nvim >/dev/null 2>&1; then
+    # nvim も同じ設定を読むよう init.vim を作成（未存在のときのみ）
+    NVIM_CONFIG="$HOME/.config/nvim/init.vim"
+    if [ ! -e "$NVIM_CONFIG" ]; then
+        mkdir -p "$(dirname "$NVIM_CONFIG")"
+        cat > "$NVIM_CONFIG" <<'EOF'
+set runtimepath^=~/.vim
+set runtimepath+=~/.vim/after
+let &packpath = &runtimepath
+source ~/.vimrc
+EOF
+        echo "Created: $NVIM_CONFIG (sources ~/.vimrc)"
+    else
+        echo "Nvim config already exists: $NVIM_CONFIG (skipped)"
+    fi
+    # nvim 用 vim-plug
+    fetch_plug_vim "$HOME/.local/share/nvim/site/autoload/plug.vim"
+fi
+
+# markdown-preview のビルドに npm が必要なので未導入なら自動インストール
+if ! command -v npm >/dev/null 2>&1; then
+    echo "npm not found. Installing nodejs and npm..."
+    if command -v apt >/dev/null 2>&1; then
+        # 他リポジトリのエラーで停止しないよう update 失敗は許容
+        sudo apt update || echo "Warning: apt update had errors (continuing)"
+        sudo apt install -y nodejs npm
+    elif command -v dnf >/dev/null 2>&1; then
+        sudo dnf install -y nodejs npm
+    elif command -v pacman >/dev/null 2>&1; then
+        sudo pacman -S --noconfirm nodejs npm
+    elif command -v brew >/dev/null 2>&1; then
+        brew install node
+    else
+        echo "Error: could not detect package manager. Install nodejs/npm manually." >&2
+        exit 1
+    fi
+fi
+
+# プラグインの自動インストール（ヘッドレスで :PlugInstall 実行）
+run_plug_install() {
+    local bin="$1"
+    if command -v "$bin" >/dev/null 2>&1; then
+        echo "Running :PlugInstall via $bin..."
+        "$bin" --headless -c "PlugInstall! --sync" -c "qa" 2>&1 | tail -5 || true
+    fi
+}
+run_plug_install vim
+run_plug_install nvim
+
 # tmuxが起動中なら設定を再読み込み
 if [ -n "$TMUX" ]; then
     tmux source-file "$HOME/.tmux.conf"
